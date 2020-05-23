@@ -1,4 +1,5 @@
 import React, { Component } from './react'
+// import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 
 class App extends Component {
@@ -9,8 +10,8 @@ class App extends Component {
   render() {
     let returnElement = React.createElement(
       'div',
-      {id: this.props.name + '_' + this.props.title},
-      React.createElement('p', null, '1'),
+      {title: this.props.name + '_' + this.props.title},
+      React.createElement('p', { key: "p_key", ref: "p_ref" }, '1'),
       React.createElement('button', null, '+')
     )
     console.log(returnElement)

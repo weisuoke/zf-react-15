@@ -12,12 +12,13 @@ function hasValidKey(config) {
 const RESOLVED_PROPS = {
   key: true,
   ref: true,
-  __self: true,
+  __self: true, // __self 是为了以后正确获取 this
   __source: true
 }
 
 export function createElement(type, config, children) {
   let propName; // 定义一个变量叫属性名
+  //保留的属性被移除掉了
   const props = {}; // 定一个一个元素的 props 对象
   let key = null; // 在兄弟节点中唯一标识自己的唯一性，在同一个的不同兄弟之间 key 要求不同
   let ref = null; // ref = React.createRef() | "username" | {input => this.username = input}. ref 的三种方式. 从而得到真实的 DOM 元素
@@ -62,7 +63,7 @@ export function createElement(type, config, children) {
     // 只有当属性对象里面没有此属性对应的值的时候。默认属性才会生效，否则直接忽略
     for (propName in defaultProps) {
       if (props[propName] === undefined) {
-        props[propName] = config[propName]
+        props[propName] = defaultProps[propName]
       }
     }
   }
