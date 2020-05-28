@@ -1,24 +1,33 @@
 import React, { Component } from './react'
-// import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 
-class App extends Component {
-  static defaultProps = {
-    name: 'app'
-  }
-
+class Child extends Component {
   render() {
-    let returnElement = React.createElement(
-      'div',
-      {title: this.props.name + '_' + this.props.title},
-      React.createElement('p', { key: "p_key", ref: "p_ref" }, '1'),
-      React.createElement('button', null, '+')
+    console.log(this.props.children) // 就一个 React 元素
+    const mappedChildren = React.Children.map(
+      this.props.children,
+      function(item, index){
+        return <li key={index}>{this.name}:{item}</li>
+      },
+      {name: '我是上下文对象'}
     )
-    console.log(returnElement)
-    return returnElement
+    console.log(mappedChildren)
+    return (
+      <div>
+        {mappedChildren}
+      </div>
+    )
   }
 }
 
-let element = React.createElement(App, { title: 'zhufeng' })
+class App extends Component {
+  render() {
+    return (
+      <Child>
+        <span>A</span>
+      </Child>
+    )
+  }
+}
 
-ReactDOM.render(element, document.getElementById('root'))
+ReactDOM.render(<App/>, document.getElementById('root'))
