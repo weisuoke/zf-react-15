@@ -25,6 +25,11 @@ function traverseAllChildren(children, mapSingleChildIntoContext, traverseContex
   // 如果 type 是字符串或数字，或者 type 是一个对象，但是 children.$$typeof 是一个 React 元素，说明 children 是一个可渲染节点
   if (type === 'string' || type === 'number' || (type === 'object' && children.$$typeof === REACT_ELEMENT_TYPE)) {
     mapSingleChildIntoContext(traverseContext, children)
+  } else  if (Array.isArray(children)){
+    // 如果 children 是数组的话， traverse
+    for (let i = 0; i < children.length; i++) {
+      traverseAllChildren(children[i], mapSingleChildIntoContext, traverseContext)
+    }
   }
 }
 
@@ -32,7 +37,12 @@ function traverseAllChildren(children, mapSingleChildIntoContext, traverseContex
 function mapSingleChildIntoContext(traverseContext, child) {
   let { result, mapFunction, context } = traverseContext
   let mappedChild = mapFunction.call(context, child)
-  result.push(mappedChild)
+  // 往 result 里面放的永远只能是一个对象。不能是数组
+  if (Array.isArray(mappedChild)) {
+    mapIntoWithKeyPrefixInternal(mappedChild, result, c => c, context)
+  } else {
+    result.push(mappedChild)
+  }
 }
 
 export {
