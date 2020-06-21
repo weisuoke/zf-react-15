@@ -26,8 +26,8 @@ class App extends Component {
   render() {
     return (
       <Child>
-        <span>A</span>
-        <span>B</span>
+        {[<span>A</span>,<span>B</span>]}
+        {[<span>C</span>,<span>D</span>]}
       </Child>
     )
   }
